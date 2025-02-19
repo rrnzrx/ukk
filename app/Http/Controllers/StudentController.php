@@ -11,7 +11,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return view('welcome', compact('students')); // Pass $students to the view
+        return view('siswa.index', compact('students')); // Pass $students to the view
     }
 
     // Handle form submission

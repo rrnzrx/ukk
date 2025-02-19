@@ -10,5 +10,5 @@ Route::post('/', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Student routes
-Route::get('/welcome', [StudentController::class, 'index'])->name('welcome'); // Use StudentController
+Route::get('/siswa', [StudentController::class, 'index'])->name('siswa.index'); // Use StudentController
 Route::post('/save-student', [StudentController::class, 'store']);

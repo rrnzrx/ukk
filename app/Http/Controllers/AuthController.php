@@ -16,12 +16,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
-    
+
         if (Auth::attempt($credentials)) {
             // Redirect to the welcome page after successful login
             return redirect()->route('welcome'); // Use the named route
         }
-    
+
         return back()->withErrors([
             'username' => 'The provided credentials do not match our records.',
         ]);
