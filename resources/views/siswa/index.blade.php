@@ -2,14 +2,18 @@
 
 @section('content')
     <!-- Main Content -->
+    <div></div>
     <div class="container-fluid p-4">
         <h1 class="fw-bold" style="font-size: 60px; color: #121212; margin: 32px 0 0 40px;">Data Siswa</h1>
-        <div class="d-flex justify-content-between align-items-center my-3" style="margin: 0 40px;">
+        <div class="d-flex justify-content-between align-items-center my-3 mx-5">
+
             <div class="d-flex gap-3">
-                <div class="input-group" style="width: 300px; border-radius: 8px; background-color: #F5F5F5;">
-                    <input type="text" class="form-control border-0 bg-transparent" placeholder="Cari..."
-                        style="color: #A3A3A3;">
-                    <span class="input-group-text bg-transparent border-0">
+                <div class="input-group search-container" style="width: 300px;">
+
+                    <input type="text" class="form-control" placeholder="Cari">
+
+                    <span class="input-group-text">
+
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="#A3A3A3"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -24,24 +28,21 @@
                     <option selected>1A</option>
                     <option>1B</option>
                 </select>
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                    data-bs-target="#tambahModal" style="border-color: #D0D5DD; background-color: #FFFFFF; color: #121212;"
-                    onmouseover="this.style.backgroundColor='#01772B'; this.style.color='#FFFFFF'"
-                    onmouseout="this.style.backgroundColor='#FFFFFF'; this.style.color='#121212'">
-                    + Tambah
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                    Tambah
                 </button>
-                <button type="button" class="btn btn-outline-secondary"
-                    style="border-color: #D0D5DD; background-color: #FFFFFF; color: #121212;"
-                    onmouseover="this.style.backgroundColor='#E20505'; this.style.color='#FFFFFF'"
-                    onmouseout="this.style.backgroundColor='#FFFFFF'; this.style.color='#121212'">
+                <button type="button" class="btn btn-danger">
                     Hapus
                 </button>
             </div>
         </div>
 
-        <div class="table-container" style="margin: 0 40px;">
-            <table id="studentTable" class="table table-bordered" style="border-radius: 8px; overflow: hidden;">
-                <thead style="background-color: #B3DCA3;">
+        <div class="table-container mx-5">
+
+            <table id="studentTable" class="table table-bordered rounded">
+
+                <thead>
+
                     <tr style="color: #121212; font-weight: 500;">
                         <th>NIS</th>
                         <th>Nama Lengkap</th>
@@ -257,4 +258,3 @@
             </div>
         </div>
     </div>
-@endsection
