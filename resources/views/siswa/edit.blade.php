@@ -8,7 +8,9 @@
                 <div class="modal-body p-0">
                     <div class="edit-form-container">
                         <h5 class="mb-4">Edit</h5>
-                        <form>
+                        <form action="{{ route('siswa.update', $student->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nisInput" class="form-label">NIS</label>

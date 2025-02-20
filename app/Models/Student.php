@@ -29,11 +29,11 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'nis',       // NIS (Nomor Induk Siswa)
-        'nama',      // Nama Lengkap
-        'kelas',     // Kelas
-        'jenis_kelamin', // Jenis Kelamin
-        'alamat',    // Alamat
+        'nis',
+        'nama',
+        'kelas',
+        'jenis_kelamin',
+        'alamat',
     ];
 
     /**
@@ -41,5 +41,5 @@ class Student extends Model
      *
      * @var bool
      */
-    public $timestamps = true; // Set to false if your table doesn't have `created_at` and `updated_at` columns
+    public $timestamps = true;
 }

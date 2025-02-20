@@ -7,14 +7,17 @@ use App\Models\Student;
 
 class StudentController extends Controller
 {
-    // Fetch students and pass them to the welcome view
     public function index()
     {
         $students = Student::all();
-        return view('siswa.index', compact('students')); // Pass $students to the view
+        return view('siswa.index', compact('students'));
     }
 
-    // Handle form submission
+    public function create()
+    {
+        return view('siswa.create');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -24,34 +27,78 @@ class StudentController extends Controller
             'jenis_kelamin' => 'required',
             'alamat' => 'required'
         ]);
-    
-        Student::create($validated);
-    
-        return response()->json(['success' => true]);
+
+        try {
+            Student::create($validated);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil ditambahkan!'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan data siswa!'
+            ], 500);
+        }
     }
-    
-    public function update(Request $request, $id)
-{
-    $validatedData = $request->validate([
-        'nis' => 'required|unique:students,nis,'.$id,
-        'nama' => 'required',
-        'kelas' => 'required',
-        'jenis_kelamin' => 'required',
-        'alamat' => 'required',
-    ]);
 
-    $student = Student::findOrFail($id);
-    $student->update($validatedData);
+    public function show($id)
+    {
+        try {
+            $student = Student::findOrFail($id);
+            return response()->json($student);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data siswa tidak ditemukan!'
+            ], 404);
+        }
+    }
+    // Edit
+    public function edit($nis)
+    {
+        $student = Student::findOrFail($nis);
+        return view('siswa.edit', compact('student'));
+    }
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Data siswa berhasil diperbarui!'
-    ]);
-}
+    public function update(Request $request, $nis)
+    {
+        $validatedData = $request->validate([
+            'nis' => 'required|unique:students,nis,' . $nis,
+            'nama' => 'required',
+            'kelas' => 'required',
+            'jenis_kelamin' => 'required',
+            'alamat' => 'required',
+        ]);
 
-public function show($id)
-{
-    $student = Student::findOrFail($id);
-    return response()->json($student);
-}
+        try {
+            $student = Student::findOrFail($nis);
+            $student->update($validatedData);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil diperbarui!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui data siswa!'
+            ], 500);
+        }
+    }
+    public function destroy($nis)
+    {
+        try {
+            $student = Student::findOrFail($nis);
+            $student->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Data siswa berhasil dihapus!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus data siswa!'
+            ], 500);
+        }
+    }
 }

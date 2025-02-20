@@ -96,7 +96,6 @@
         .class-dropdown-menu {
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
             padding: 0;
         }
 
@@ -149,12 +148,11 @@
         .table-container {
             background-color: var(--white);
             border-radius: 12px;
-            overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .student-table {
-            width: 100%;
+            width: auto;
             border-collapse: collapse;
         }
 
@@ -164,13 +162,14 @@
             font-size: 16px;
             font-weight: 500;
             padding: 16px;
-            text-align: left;
+            text-align: center;
         }
 
         .student-table td {
             padding: 16px;
             border-bottom: 1px solid #f0f0f0;
             color: var(--primary-text);
+            text-align: center;
         }
 
         .student-table tr:hover {
@@ -247,6 +246,174 @@
             border: none;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi variabel
+            let selectedRows = new Set();
+            const addModal = new bootstrap.Modal(document.getElementById('addSiswaModal'));
+
+            // Load initial data
+            loadSiswa();
+
+            // Button Tambah
+            document.querySelector('.btn-add').addEventListener('click', function() {
+                document.getElementById('addSiswaForm').reset();
+                addModal.show();
+            });
+
+            // Button Simpan pada modal
+            document.getElementById('saveSiswa').addEventListener('click', function() {
+                const form = document.getElementById('addSiswaForm');
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                fetch('api/siswa.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.message === "Siswa was created.") {
+                            addModal.hide();
+                            loadSiswa();
+                            alert('Data siswa berhasil ditambahkan');
+                        } else {
+                            alert('Gagal menambahkan data siswa');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat menambahkan data');
+                    });
+            });
+
+            // Checkbox pada tabel
+            document.querySelector('table').addEventListener('click', function(e) {
+                const row = e.target.closest('tr');
+                if (row && row.querySelector('input[type="checkbox"]')) {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+
+                    if (checkbox.checked) {
+                        selectedRows.add(row.dataset.id);
+                        row.classList.add('table-active');
+                    } else {
+                        selectedRows.delete(row.dataset.id);
+                        row.classList.remove('table-active');
+                    }
+
+                    // Enable/disable tombol hapus
+                    document.querySelector('.btn-delete').disabled = selectedRows.size === 0;
+                }
+            });
+
+            // Button Hapus
+            document.querySelector('.btn-delete').addEventListener('click', function() {
+                if (selectedRows.size === 0) return;
+
+                if (confirm('Apakah Anda yakin ingin menghapus data yang dipilih?')) {
+                    const deletePromises = Array.from(selectedRows).map(id =>
+                        fetch(`api/siswa.php?id=${id}`, {
+                            method: 'DELETE'
+                        }).then(response => response.json())
+                    );
+
+                    Promise.all(deletePromises)
+                        .then(() => {
+                            loadSiswa();
+                            selectedRows.clear();
+                            document.querySelector('.btn-delete').disabled = true;
+                            alert('Data berhasil dihapus');
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Terjadi kesalahan saat menghapus data');
+                        });
+                }
+            });
+
+            // Filter Kelas
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const kelas = this.textContent;
+                    loadSiswa(kelas);
+
+                    // Update active state
+                    document.querySelectorAll('.dropdown-item').forEach(el =>
+                        el.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update button text
+                    document.querySelector('.dropdown-toggle').textContent = `Kelas ${kelas}`;
+                });
+            });
+
+            // Search
+            let searchTimeout;
+            document.querySelector('.search-input').addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                const keyword = e.target.value;
+
+                searchTimeout = setTimeout(() => {
+                    if (keyword.length >= 3 || keyword.length === 0) {
+                        searchSiswa(keyword);
+                    }
+                }, 500);
+            });
+        });
+
+        function loadSiswa(kelas = '') {
+            fetch(`api/siswa.php${kelas ? `?kelas=${kelas}` : ''}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateTable(data.records || []);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateTable(records) {
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center">Tidak ada data siswa</td>
+                </tr>
+            `;
+                return;
+            }
+
+            records.forEach(record => {
+                const tr = document.createElement('tr');
+                tr.dataset.id = record.id;
+                tr.innerHTML = `
+                <td>
+                    <input type="checkbox" class="form-check-input">
+                </td>
+                <td>${record.nis}</td>
+                <td>${record.nama_lengkap}</td>
+                <td>${record.kelas}</td>
+                <td>${record.jenis_kelamin}</td>
+                <td>${record.alamat}</td>
+            `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function searchSiswa(keyword) {
+            fetch(`api/siswa.php?search=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateTable(data.records || []);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </head>
 
 <body>
@@ -257,6 +424,132 @@
     </main>
 
 </body>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('simpanButton').addEventListener('click', function() {
+        const formData = new FormData(document.getElementById('tambahForm'));
 
+        fetch('/students', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw err;
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    $('#tambahModal').modal('hide');
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + (error.message || 'Terjadi kesalahan'));
+            });
+    });
+
+    // Delete Student
+    function deleteStudent(id) {
+        if (confirm('Apakah yakin menghapus data siswa?')) {
+            fetch(`/siswa/${nis}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        document.getElementById(`student-${id}`).remove();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    // Search Functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        document.querySelectorAll('#studentTable tbody tr').forEach(row => {
+            const nama = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            row.style.display = nama.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Filter 
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const selectedKelas = this.getAttribute('data-kelas');
+            document.querySelectorAll('#studentTable tbody tr').forEach(row => {
+                const kelas = row.getAttribute('data-kelas');
+                row.style.display = (selectedKelas === 'all' || kelas === selectedKelas) ? '' :
+                    'none';
+            });
+        });
+    });
+
+    // Edit Student 
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const studentId = this.getAttribute('data-id');
+            fetch(`/get-student/${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('edit_nis').value = data.nis;
+                    document.getElementById('edit_nama').value = data.nama;
+                    document.getElementById('edit_kelas').value = data.kelas;
+                    document.getElementById('edit_jenis_kelamin').value = data.jenis_kelamin;
+                    document.getElementById('edit_alamat').value = data.alamat;
+                    document.getElementById('editForm').action = `/update-student/${studentId}`;
+                });
+        });
+    });
+
+    fetch('/get-students')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error('Error:', error));
+
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#tambahModal').modal('hide');
+                    showMessage('success', 'Data siswa berhasil ditambahkan');
+                    location.reload();
+                } else {
+                    showMessage('error', 'Gagal menambahkan data: ' + (data.message || ''));
+                }
+
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 
 </html>

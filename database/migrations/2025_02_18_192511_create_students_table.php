@@ -14,8 +14,7 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
-            $table->string('nis')->unique(); // NIS must be unique
+            $table->string('nis')->unique();
             $table->string('nama');
             $table->string('kelas');
             $table->string('jenis_kelamin');
