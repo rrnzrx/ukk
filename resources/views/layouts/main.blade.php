@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Siswa</title>
-        <!-- jQuery -->
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- DataTables CSS -->
@@ -17,95 +17,241 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         :root {
-            --sidebar-width: 280px;
-            --sidebar-bg: #DFF0D8;
-            --primary-green: #01772B;
-            --hover-green: #B3DCA3;
+            --primary-text: #121212;
+            --light-bg: #F5F5F5;
+            --placeholder-color: #A3A3A3;
+            --table-header-bg: #B3DCA3;
+            --button-stroke: #D0D5DD;
+            --add-button-hover: #01772B;
+            --delete-button-hover: #E20505;
+            --white: #FFFFFF;
         }
 
         body {
-            background-color: #F5F5F5;
-            display: flex;
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #F8FAF5;
+        }
+
+        .sidebar {
+            background-color: #E8F5E1;
             min-height: 100vh;
+            padding: 20px 0;
         }
 
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
         }
 
-        /* Remove duplicate styles and consolidate */
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
+        .logo {
+            width: 80px;
+            height: 80px;
         }
 
-        .student-table th {
-            background: #B3DCA3;
-            padding: 1rem;
-            color: #121212;
+        .page-title {
+            font-size: 60px;
+            font-weight: 700;
+            color: var(--primary-text);
+            margin-bottom: 0;
         }
 
-        .student-table td {
-            padding: 1rem;
-            vertical-align: middle;
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        /* Better button styling */
-        .btn-add, .btn-delete {
-            gap: 8px;
-            padding: 0.75rem 1.5rem;
+        .search-container {
+            position: relative;
+            max-width: 300px;
+        }
+
+        .search-input {
+            background-color: var(--light-bg);
+            border: none;
             border-radius: 8px;
+            padding: 10px 40px 10px 16px;
+            width: 100%;
+            color: var(--primary-text);
+        }
+
+        .search-input::placeholder {
+            color: var(--placeholder-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--placeholder-color);
+        }
+
+        .class-filter {
+            min-width: 150px;
+        }
+
+        .class-dropdown-menu {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .class-dropdown-item {
+            padding: 10px 16px;
+            transition: background-color 0.2s;
+        }
+
+        .class-dropdown-item.active,
+        .class-dropdown-item:hover {
+            background-color: #E8F5E1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .btn-add,
+        .btn-delete {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid var(--button-stroke);
+            border-radius: 8px;
+            background-color: transparent;
+            color: var(--primary-text);
             transition: all 0.2s ease;
         }
 
-        .btn-add {
-            background: var(--primary-green);
-            color: white;
-            border: none;
-        }
-
         .btn-add:hover {
-            background: #015a23;
+            background-color: var(--add-button-hover);
+            border-color: var(--add-button-hover);
+            color: var(--white);
         }
 
-        .btn-delete {
-            background: #E20505;
-            color: white;
-            border: none;
+        .btn-delete:hover {
+            background-color: var(--delete-button-hover);
+            border-color: var(--delete-button-hover);
+            color: var(--white);
         }
 
-        /* Modal improvements */
-        .modal-content {
+        .btn-add:hover svg path,
+        .btn-delete:hover svg path {
+            fill: var(--white);
+        }
+
+        .table-container {
+            background-color: var(--white);
             border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-        .form-control {
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .student-table th {
+            background-color: var(--table-header-bg);
+            color: var(--primary-text);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 16px;
+            text-align: left;
+        }
+
+        .student-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            color: var(--primary-text);
+        }
+
+        .student-table tr:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .student-row.zebra-stripe:nth-child(even) {
+            background-color: #f9fcf7;
+        }
+
+        .student-row.zebra-stripe:hover {
+            background-color: #f0f7eb;
+        }
+
+        .dashboard-nav,
+        .logout-nav {
+            padding: 12px 24px;
+            margin: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             border-radius: 8px;
-            padding: 0.75rem;
+            color: var(--primary-text);
+            text-decoration: none;
+            transition: background-color 0.2s;
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            
-            .student-table td, .student-table th {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
+        .dashboard-nav:hover,
+        .logout-nav:hover {
+            background-color: #D6EAC8;
+        }
+
+        .dashboard-nav.active {
+            background-color: #D6EAC8;
+            font-weight: 500;
+        }
+
+        /* Edit Modal Styles */
+        .edit-modal {
+            max-width: 600px;
+        }
+
+        .edit-form-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-text);
+        }
+
+        .btn-save {
+            background-color: var(--add-button-hover);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+        }
+
+        .btn-cancel {
+            background-color: transparent;
+            color: var(--primary-text);
+            border: 1px solid var(--button-stroke);
+            padding: 10px 24px;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        #editStudentModal .modal-content {
+            border-radius: 12px;
+            border: none;
         }
     </style>
 </head>
 
-
 <body>
-@include('layouts.sidebar')
-    
+    @include('layouts.sidebar')
+
     <main class="main-content">
         @yield('content')
     </main>

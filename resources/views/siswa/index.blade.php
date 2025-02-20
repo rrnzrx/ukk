@@ -2,169 +2,97 @@
 
 @section('content')
     <!-- Main Content -->
-    <div class="container-fluid p-4">
-        <!-- Page Title -->
-        <h1 class="fw-bold mb-4" style="font-size: 60px; color: #121212;">Data Siswa</h1>
+    <div class="container-fluid p-4" style="background-color: white;">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <!-- Title -->
+            <h1 class="fw-bold" style="font-size: 60px; color: #121212; font-family: 'Noto Sans', sans-serif;">Data Siswa</h1>
 
-        <!-- Filter and Action Buttons -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <!-- Class Filter -->
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="classFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Kelas
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="ms-2">
-                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="classFilterDropdown">
-                    <li><a class="dropdown-item active" href="#" data-kelas="all">Semua Kelas</a></li>
-                    <li><a class="dropdown-item" href="#" data-kelas="1A">1A</a></li>
-                    <li><a class="dropdown-item" href="#" data-kelas="1B">1B</a></li>
-                </ul>
-            </div>
+            <!-- Filter and Search -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Class Filter -->
+                <div class="droclepdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="classFilterDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Kelas
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="classFilterDropdown">
+                        <li><a class="dropdown-item" href="#">1A</a></li>
+                        <li><a class="dropdown-item" href="#">1B</a></li>
+                    </ul>
+                </div>
 
-            <!-- Action Buttons -->
-            <div class="d-flex gap-3">
-                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 4V16M4 10H16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    Tambah
-                </button>
-                <input type="text" id="searchInput" class="form-control" placeholder="Cari siswa..." style="width: 200px;">
+                <!-- Search Bar -->
+                <div class="search-container position-relative">
+                    <input type="text" class="form-control search-input" placeholder="Cari data..."
+                        style="background-color: #F5F5F5; color: #121212;">
+                    <div class="search-icon position-absolute end-0 top-50 translate-middle-y me-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.58333 15.8333C13.0355 15.8333 15.8333 13.0355 15.8333 9.58333C15.8333 6.13116 13.0355 3.33333 9.58333 3.33333C6.13116 3.33333 3.33333 6.13116 3.33333 9.58333C3.33333 13.0355 6.13116 15.8333 9.58333 15.8333Z"
+                                stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17.5 17.5L14.1667 14.1667" stroke="#A3A3A3" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Action Buttons -->
+        <div class="d-flex gap-3 mb-4">
+            <!-- Add Button -->
+            <button class="btn btn-outline-secondary d-flex align-items-center gap-2"
+                style="border-width: 2px; padding: 8px 16px;"
+                onmouseover="this.style.backgroundColor='#01772B'; this.style.color='#FFFFFF';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#121212';">
+                Tambah
+            </button>
+
+            <!-- Delete Button -->
+            <button class="btn btn-outline-secondary d-flex align-items-center gap-2"
+                style="border-width: 2px; padding: 8px 16px;"
+                onmouseover="this.style.backgroundColor='#E20505'; this.style.color='#FFFFFF';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#121212';">
+                Hapus
+            </button>
+        </div>
         <!-- Student Data Table -->
-        <div class="table-responsive">
-            <table class="table table-hover" id="studentTable">
-                <thead class="table-light">
+        <div class="table-container mb-4" style="background-color: white;">
+            <table class="table table-hover">
+                <thead class="table-header" style="background-color: #B3DCA3;">
                     <tr>
-                        <th>NIS</th>
-                        <th>Nama Lengkap</th>
-                        <th>Kelas</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Alamat</th>
-                        <th class="text-center">Aksi</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">NIS</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">Nama Lengkap</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">Kelas</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">Jenis Kelamin</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">Alamat</th>
+                        <th style="color: #121212; font-size: 16px; font-weight: 500;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-    @if (isset($students) && $students->count() > 0)
-        @foreach ($students as $student)
-            <tr data-kelas="{{ $student->kelas }}">
-                <td>{{ $student->nis }}</td>
-                <td>{{ $student->nama }}</td>
-                <td>{{ $student->kelas }}</td>
-                <td>{{ $student->jenis_kelamin }}</td>
-                <td>{{ $student->alamat }}</td>
-                <td class="text-center">
-                    <button class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $student->id }}">Edit</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $student->id }}">Hapus</button>
-                </td>
-            </tr>
-        @endforeach
-    @else
-        <tr>
-            <td colspan="6" class="text-center">Tidak ada data siswa.</td>
-        </tr>
-    @endif
-</tbody>
+                @if (isset($students) && $students->count() > 0)
+                    @foreach ($students as $student)
+                        <tr data-kelas="{{ $student->kelas }}">
+                            <td>{{ $student->nis }}</td>
+                            <td>{{ $student->nama }}</td>
+                            <td>{{ $student->kelas }}</td>
+                            <td>{{ $student->jenis_kelamin }}</td>
+                            <td>{{ $student->alamat }}</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" data-id="{{ $student->id }}">Edit</button>
+                                <button class="btn btn-sm btn-danger delete-btn"
+                                    data-id="{{ $student->id }}">Hapus</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" class="text-center">Tidak ada data siswa</td>
+                    </tr>
+                @endif
+                </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Tambah Modal -->
-    <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Siswa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <form id="tambahForm" method="POST">
-                        @csrf 
-                        <div class="mb-3">
-                            <label for="nis" class="form-label">NIS</label>
-                            <input type="text" class="form-control" id="nis" name="nis" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="kelas" class="form-label">Kelas</label>
-                            <select class="form-select" id="kelas" name="kelas" required>
-                                <option value="1A">1A</option>
-                                <option value="1B">1B</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                            <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <input type="text" class="form-control" id="alamat" name="alamat" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="simpanButton">Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Data Siswa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label for="edit_nis" class="form-label">NIS</label>
-                            <input type="text" class="form-control" id="edit_nis" name="nis" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="edit_nama" name="nama" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_kelas" class="form-label">Kelas</label>
-                            <select class="form-select" id="edit_kelas" name="kelas" required>
-                                <option value="1A">1A</option>
-                                <option value="1B">1B</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                            <select class="form-select" id="edit_jenis_kelamin" name="jenis_kelamin" required>
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_alamat" class="form-label">Alamat</label>
-                            <input type="text" class="form-control" id="edit_alamat" name="alamat" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -172,43 +100,46 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-document.getElementById('simpanButton').addEventListener('click', function () {
-    const formData = new FormData(document.getElementById('tambahForm'));
-    
-    fetch('/students', { // Ganti endpoint sesuai route Laravel
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(err => { throw err; });
-        }
-        return response.json();
-    })
-    .then(data => {
-        if(data.success) {
-            $('#tambahModal').modal('hide');
-            location.reload();
-        }
-    })
-    .catch(error => {
-        alert('Error: ' + (error.message || 'Terjadi kesalahan'));
-    });
-});
+        document.getElementById('simpanButton').addEventListener('click', function() {
+            const formData = new FormData(document.getElementById('tambahForm'));
+
+            fetch('/students', { // Ganti endpoint sesuai route Laravel
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw err;
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        $('#tambahModal').modal('hide');
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + (error.message || 'Terjadi kesalahan'));
+                });
+        });
         // Delete Student
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                     const studentId = this.getAttribute('data-id');
                     fetch(`/delete-student/${studentId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            }
+                        })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
@@ -222,7 +153,7 @@ document.getElementById('simpanButton').addEventListener('click', function () {
         });
 
         // Search Functionality
-        document.getElementById('searchInput').addEventListener('input', function () {
+        document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             document.querySelectorAll('#studentTable tbody tr').forEach(row => {
                 const nama = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
@@ -232,60 +163,61 @@ document.getElementById('simpanButton').addEventListener('click', function () {
 
         // Filter by Kelas
         document.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', function () {
+            item.addEventListener('click', function() {
                 const selectedKelas = this.getAttribute('data-kelas');
                 document.querySelectorAll('#studentTable tbody tr').forEach(row => {
                     const kelas = row.getAttribute('data-kelas');
-                    row.style.display = (selectedKelas === 'all' || kelas === selectedKelas) ? '' : 'none';
+                    row.style.display = (selectedKelas === 'all' || kelas === selectedKelas) ? '' :
+                        'none';
                 });
             });
         });
 
-// Edit Student - Update the existing code to this:
-document.querySelectorAll('.edit-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const studentId = this.getAttribute('data-id');
-        fetch(`/get-student/${studentId}`)
+        // Edit Student - Update the existing code to this:
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const studentId = this.getAttribute('data-id');
+                fetch(`/get-student/${studentId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('edit_nis').value = data.nis;
+                        document.getElementById('edit_nama').value = data.nama;
+                        document.getElementById('edit_kelas').value = data.kelas;
+                        document.getElementById('edit_jenis_kelamin').value = data.jenis_kelamin;
+                        document.getElementById('edit_alamat').value = data.alamat;
+                        document.getElementById('editForm').action = `/update-student/${studentId}`;
+                    });
+            });
+        });
+
+        fetch('/get-students')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('edit_nis').value = data.nis;
-                document.getElementById('edit_nama').value = data.nama;
-                document.getElementById('edit_kelas').value = data.kelas;
-                document.getElementById('edit_jenis_kelamin').value = data.jenis_kelamin;
-                document.getElementById('edit_alamat').value = data.alamat;
-                document.getElementById('editForm').action = `/update-student/${studentId}`;
-            });
-    });
-});
+                console.log(data); // Check if data is returned
+            })
+            .catch(error => console.error('Error:', error));
 
-fetch('/get-students')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // Check if data is returned
-    })
-    .catch(error => console.error('Error:', error));
+        // Handle edit form submission
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-// Handle edit form submission
-document.getElementById('editForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    
-    fetch(this.action, {
-        method: 'PUT',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            location.reload();
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 @endsection
