@@ -6,78 +6,98 @@
     <div class="container-fluid p-4">
         <h1 class="fw-bold" style="font-size: 60px; color: #121212; margin: 32px 0 0 40px;">Data Siswa</h1>
         <div class="d-flex justify-content-between align-items-center my-3 mx-5">
-
-            <div class="d-flex gap-3">
-                <div class="input-group search-container" style="width: 300px;">
-
-                    <input type="text" class="form-control" placeholder="Cari">
-
-                    <span class="input-group-text">
-
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#A3A3A3"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                </div>
-                <select class="form-select" style="width: 160px;">
-                    <option selected>1A</option>
-                    <option>1B</option>
-                </select>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal">
-                    Tambah
+            <!-- Class Filter -->
+            <div class="dropdown class-filter">
+                <button class="btn btn-light dropdown-toggle" type="button" id="classFilterDropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Kelas
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="ms-2">
+                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#121212" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </button>
-                <button type="button" class="btn btn-danger">
-                    Hapus
-                </button>
+                <ul class="dropdown-menu class-dropdown-menu" aria-labelledby="classFilterDropdown">
+                    <li><a class="dropdown-item class-dropdown-item active" href="#">Kelas</a></li>
+                    <li><a class="dropdown-item class-dropdown-item" href="#">1A</a></li>
+                    <li><a class="dropdown-item class-dropdown-item" href="#">1B</a></li>
+                </ul>
             </div>
         </div>
-
-        <div class="table-container mx-5">
-
-            <table id="studentTable" class="table table-bordered rounded">
-
-                <thead>
-
-                    <tr style="color: #121212; font-weight: 500;">
-                        <th>NIS</th>
-                        <th>Nama Lengkap</th>
-                        <th>Kelas</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Alamat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (isset($students) && $students->count() > 0)
-                        @foreach ($students as $student)
-                            <tr>
-                                <td>{{ $student->nis }}</td>
-                                <td>{{ $student->nama }}</td>
-                                <td>{{ $student->kelas }}</td>
-                                <td>{{ $student->jenis_kelamin }}</td>
-                                <td>{{ $student->alamat }}</td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal"
-                                        data-bs-target="#editModal" data-id="{{ $student->id }}">Edit</button>
-                                    <button class="btn btn-sm btn-danger delete-btn"
-                                        data-id="{{ $student->id }}">Hapus</button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="6" class="text-center">Tidak ada data siswa.</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
     </div>
+
+    <!-- Add Buttons -->
+    <div class="action-buttons">
+        <button class="btn-add">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 4.16675V15.8334M4.16667 10.0001H15.8333" stroke="#121212" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Tambah
+        </button>
+        <!-- Delete Buttons -->
+        <button class="btn-delete">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M15.8333 5.83325L4.16667 5.83325M8.33333 9.16659V13.3333M11.6667 9.16659V13.3333M14.1667 5.83325V15.8333C14.1667 16.2753 13.9911 16.6993 13.6785 17.0119C13.366 17.3244 12.942 17.4999 12.5 17.4999H7.5C7.05797 17.4999 6.63405 17.3244 6.32149 17.0119C6.00893 16.6993 5.83333 16.2753 5.83333 15.8333V5.83325M13.3333 5.83325V4.16659C13.3333 3.72456 13.1577 3.30064 12.8452 2.98808C12.5326 2.67552 12.1087 2.49992 11.6667 2.49992H8.33333C7.8913 2.49992 7.46738 2.67552 7.15482 2.98808C6.84226 3.30064 6.66667 3.72456 6.66667 4.16659V5.83325"
+                    stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+
+
+    <!-- Student Data Table -->
+    <div class="table-container mb-4">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>NIS</th>
+                    <th>Nama Lengkap</th>
+                    <th>Kelas</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (isset($students) && $students->count() > 0)
+                    @foreach ($students as $student)
+                        <tr>
+                            <td>{{ $student->nis }}</td>
+                            <td>{{ $student->nama }}</td>
+                            <td>{{ $student->kelas }}</td>
+                            <td>{{ $student->jenis_kelamin }}</td>
+                            <td>{{ $student->alamat }}</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" data-id="{{ $student->id }}">Edit</button>
+                                <button class="btn btn-sm btn-danger delete-btn"
+                                    data-id="{{ $student->id }}">Hapus</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" class="text-center">Tidak ada data siswa.</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Modal -->
     <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">

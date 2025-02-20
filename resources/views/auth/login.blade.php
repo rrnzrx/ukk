@@ -8,8 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Masuk</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap');
-
         body {
             font-family: "Noto Sans", serif;
             font-weight: 600;
