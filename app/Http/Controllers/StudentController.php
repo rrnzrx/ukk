@@ -7,9 +7,15 @@ use App\Models\Student;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::all();
+        $search = $request->get('search');
+        
+        $students = Student::when($search, function($query) use ($search) {
+            return $query->where('nama', 'like', '%'.$search.'%')
+                         ->orWhere('nis', 'like', '%'.$search.'%');
+        })->get();
+        
         return view('siswa.index', compact('students'));
     }
 
@@ -17,28 +23,39 @@ class StudentController extends Controller
     {
         return view('siswa.create');
     }
-
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
             'nis' => 'required|unique:students',
             'nama' => 'required',
             'kelas' => 'required',
-            'jenis_kelamin' => 'required',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'alamat' => 'required'
         ]);
-
-        try {
-            Student::create($validated);
+    
+        Student::create($validated);
+    
+        return response()->json(['success' => true]);
+    }
+        
+        public function update(Request $request, $id)
+        {
+            $validatedData = $request->validate([
+                'nis' => 'required|unique:students,nis,' . $id,
+                'nama' => 'required',
+                'kelas' => 'required',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'alamat' => 'required',
+            ]);
+        
+            $student = Student::findOrFail($id);
+            $student->update($validatedData);
+        
             return response()->json([
                 'success' => true,
-                'message' => 'Data siswa berhasil ditambahkan!'
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal menambahkan data siswa!'
-            ], 500);
+                'message' => 'Data siswa berhasil diperbarui!'
+            ]);
         }
     }
 
@@ -55,16 +72,16 @@ class StudentController extends Controller
         }
     }
     // Edit
-    public function edit($nis)
+    public function edit($id)
     {
-        $student = Student::findOrFail($nis);
+        $student = Student::findOrFail($id);
         return view('siswa.edit', compact('student'));
     }
 
-    public function update(Request $request, $nis)
+    public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'nis' => 'required|unique:students,nis,' . $nis,
+            'nis' => 'required|unique:students,nis,' . $id,
             'nama' => 'required',
             'kelas' => 'required',
             'jenis_kelamin' => 'required',
@@ -72,7 +89,7 @@ class StudentController extends Controller
         ]);
 
         try {
-            $student = Student::findOrFail($nis);
+            $student = Student::findOrFail($id);
             $student->update($validatedData);
             return response()->json([
                 'success' => true,
@@ -85,10 +102,11 @@ class StudentController extends Controller
             ], 500);
         }
     }
-    public function destroy($nis)
+    // Delete
+    public function destroy($id)
     {
         try {
-            $student = Student::findOrFail($nis);
+            $student = Student::findOrFail($id);
             $student->delete();
             return response()->json([
                 'success' => true,

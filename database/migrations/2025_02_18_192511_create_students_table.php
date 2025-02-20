@@ -19,7 +19,6 @@ class CreateStudentsTable extends Migration
             $table->string('kelas');
             $table->string('jenis_kelamin');
             $table->string('alamat');
-            $table->timestamps();
         });
     }
 

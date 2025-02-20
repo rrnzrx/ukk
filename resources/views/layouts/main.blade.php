@@ -470,7 +470,7 @@
                 .then(data => {
                     if (data.success) {
                         alert(data.message);
-                        document.getElementById(`student-${id}`).remove();
+                        document.getElementById(`student-${nis}`).remove();
                     } else {
                         alert(data.message);
                     }
