@@ -7,6 +7,6 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        return view('welcome'); // This will render the welcome.blade.php file
+        return view('siswa.index'); // This will render the welcome.blade.php file
     }
 }
