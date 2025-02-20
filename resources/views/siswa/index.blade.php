@@ -29,18 +29,13 @@
     <!-- Add Buttons -->
     <div class="action-buttons">
         <button class="btn-add">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 4.16675V15.8334M4.16667 10.0001H15.8333" stroke="#121212" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round" />
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" img="public/plus.svg">
             </svg>
             Tambah
         </button>
         <!-- Delete Buttons -->
         <button class="btn-delete">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M15.8333 5.83325L4.16667 5.83325M8.33333 9.16659V13.3333M11.6667 9.16659V13.3333M14.1667 5.83325V15.8333C14.1667 16.2753 13.9911 16.6993 13.6785 17.0119C13.366 17.3244 12.942 17.4999 12.5 17.4999H7.5C7.05797 17.4999 6.63405 17.3244 6.32149 17.0119C6.00893 16.6993 5.83333 16.2753 5.83333 15.8333V5.83325M13.3333 5.83325V4.16659C13.3333 3.72456 13.1577 3.30064 12.8452 2.98808C12.5326 2.67552 12.1087 2.49992 11.6667 2.49992H8.33333C7.8913 2.49992 7.46738 2.67552 7.15482 2.98808C6.84226 3.30064 6.66667 3.72456 6.66667 4.16659V5.83325"
-                    stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" img="ukk/public/delete.svg">
             </svg>
         </button>
     </div>

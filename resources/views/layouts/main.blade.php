@@ -33,18 +33,23 @@
 
         /* Sidebar */
         .sidebar {
-            background-color: var(--background-light);
+            background-color: #E8F5E1;
+            min-height: 100vh;
+            padding: 20px 0;
         }
 
-        .sidebar .nav-link {
-            border-radius: var(--border-radius);
-            color: var(--primary-color);
-            transition: background-color 0.3s ease;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
         }
 
-        .sidebar .nav-link:hover {
-            background-color: var(--secondary-color);
+        .logo {
+            width: 80px;
+            height: 80px;
         }
+
+        /* Data Siswa */
 
         .page-title {
             font-size: 60px;
@@ -188,6 +193,29 @@
             background-color: #f0f7eb;
         }
 
+        .dashboard-nav,
+        .logout-nav {
+            padding: 12px 24px;
+            margin: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 8px;
+            color: var(--primary-text);
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .dashboard-nav:hover,
+        .logout-nav:hover {
+            background-color: #D6EAC8;
+        }
+
+        .dashboard-nav.active {
+            background-color: #D6EAC8;
+            font-weight: 500;
+        }
+
         /* Edit */
         .edit-modal {
             max-width: 600px;
@@ -257,9 +285,6 @@
             background-color: var(--secondary-color);
         }
 
-
-
-
         /* Responsive design
         @media (max-width: 768px) {
             .sidebar {
@@ -274,7 +299,7 @@
 </head>
 
 
-<body class="flex">
+<body>
 
     @include('layouts.sidebar')
 
